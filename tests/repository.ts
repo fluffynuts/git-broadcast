@@ -1,6 +1,6 @@
-import { CommitSummary, LogOptions, SimpleGit, StatusResult } from "simple-git/promise";
+import { CommitSummary, LogOptions, SimpleGit, StatusResult } from "simple-git";
 import * as path from "path";
-import GitFactory = require("simple-git/promise");
+import GitFactory from "simple-git";
 
 export class Repository {
     public get fullpath() {
@@ -19,8 +19,8 @@ export class Repository {
     constructor(private _fullpath: string) {
     }
 
-    public init(): Promise<void> {
-        return this.git.init(false);
+    public async init(): Promise<void> {
+        await this.git.init(false);
     }
 
     public checkout(...args: string[]) {
@@ -55,7 +55,7 @@ export class Repository {
 
     public async addAll(): Promise<void> {
         const status = await this.git.status();
-        for (let f of status.files) {
+        for (const f of status.files) {
             await this.git.add(f.path);
         }
     }

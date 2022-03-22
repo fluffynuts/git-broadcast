@@ -44,7 +44,7 @@ describe(`git-broadcast`, () => {
             await sandbox.writeFile("local/readme.md", conflictingContents);
             await local.commitAll(conflictingMessage);
             const beforeLog = await local.log();
-            expect(beforeLog.latest.message)
+            expect(beforeLog.latest?.message)
                 .toEqual(conflictingMessage);
 
             const currentContents = await sandbox.readTextFile("local/readme.md");
@@ -59,7 +59,7 @@ describe(`git-broadcast`, () => {
             // Assert
             await local.checkout(featureBranch);
             const log = await local.log();
-            expect(log.latest.message)
+            expect(log.latest?.message)
                 .toEqual(conflictingMessage);
             expect(result.unmerged)
                 .toBeArray();

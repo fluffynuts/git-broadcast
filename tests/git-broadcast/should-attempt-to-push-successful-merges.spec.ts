@@ -54,7 +54,7 @@ describe(`git-broadcast`, () => {
                 await local.checkout(featureBranch);
                 const log = await local.log();
                 // messages should reflect a fast-forward merge
-                expect(log.latest.message)
+                expect(log.latest?.message)
                     .toMatch(/Merge remote-tracking/);
                 expect(log.all[1].message)
                     .toEqual(":sparkles: add empty package.json");

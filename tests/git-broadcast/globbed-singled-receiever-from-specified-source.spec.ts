@@ -50,7 +50,7 @@ describe(`git-broadcast`, () => {
         // Assert
         await local.checkout(featureBranch);
         const log = await local.log();
-        expect(log.latest.message)
+        expect(log.latest?.message)
             .toEqual(updatedMessage);
     });
 });

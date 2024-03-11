@@ -1,6 +1,6 @@
 {
   "name": "git-broadcast",
-  "version": "0.45.2",
+  "version": "0.45.3",
   "description": "Utility to merge outwards from one branch to all others, where cleanly possible",
   "main": "dist/git-broadcast.js",
   "files": [

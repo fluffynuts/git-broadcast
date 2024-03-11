@@ -1,8 +1,12 @@
+// noinspection ES6PreferShortImport
+
 import "expect-even-more-jest";
 import { Sandbox } from "filesystem-sandbox";
-import { clearCaches, gitBroadcast } from "../../src/git-broadcast";
+import { gitBroadcast } from "../../src/git-broadcast";
+// @ts-ignore
 import { Repository } from "../repository";
 import { CollectingLogger } from "../../src/collecting-logger";
+import { clearCaches } from "../../src/list-branches-raw";
 
 describe(`git-broadcast`, () => {
     beforeEach(() => {
@@ -22,7 +26,7 @@ describe(`git-broadcast`, () => {
                     sandbox = await Sandbox.create(),
                     originPath = await sandbox.mkdir("origin"),
                     localPath = await sandbox.mkdir("local"),
-                    origin = Repository.createAt(originPath),
+                    origin = await Repository.createAt(originPath),
                     featureBranch = "feature/add-package-json",
                     logger = new CollectingLogger();
                 await origin.init();

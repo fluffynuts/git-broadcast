@@ -13,7 +13,7 @@ describe(`console-logger`, () => {
 
     it(`should log info via console.log`, async () => {
         // Arrange
-        spyOn(console, "log").and.callThrough();
+        spyOn(console, "log");
         const sut = create();
         // Act
         sut.info("foo bar");

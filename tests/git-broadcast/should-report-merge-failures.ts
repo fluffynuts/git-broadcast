@@ -1,9 +1,13 @@
+// noinspection ES6PreferShortImport
+
 import "expect-even-more-jest";
 import { Sandbox } from "filesystem-sandbox";
 import * as faker from "faker";
-import { clearCaches, gitBroadcast } from "../../src/git-broadcast";
+import { gitBroadcast } from "../../src/git-broadcast";
+// @ts-ignore
 import { Repository } from "../repository";
 import { CollectingLogger } from "../../src/collecting-logger";
+import { clearCaches } from "../../src/list-branches-raw";
 
 describe(`git-broadcast`, () => {
     beforeEach(() => {
@@ -29,7 +33,7 @@ describe(`git-broadcast`, () => {
                 conflictingMessage = ":fire: conflict!",
                 originPath = await sandbox.mkdir("origin"),
                 localPath = await sandbox.mkdir("local"),
-                origin = Repository.createAt(originPath);
+                origin = await Repository.createAt(originPath);
             await origin.init();
             await sandbox.writeFile("origin/readme.md", readmeContents);
             await origin.commitAll(initialMessage);

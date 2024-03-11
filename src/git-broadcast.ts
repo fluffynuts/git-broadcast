@@ -1,9 +1,12 @@
-import { exec, ExecError, ProcessResult } from "./exec";
+import { ExecError, ProcessResult } from "./exec";
 import { Logger } from "./console-logger";
 import { NullLogger } from "./null-logger";
 import { mkdebug } from "./mkdebug";
 import { makeConstruction, makeFail, makeInfo, makeOk, makeSuccess, makeWarn } from "./prefixers";
 import { BroadcastOptions } from "./types";
+import { clearCaches, listBranchesRaw } from "./list-branches-raw";
+import { currentBranchRe, git } from "./git";
+import { matchBranches } from "./match-branches";
 
 const debug = mkdebug(__filename);
 export const unknownAuthor: AuthorDetails = {
@@ -21,7 +24,6 @@ const defaultOptions: BroadcastOptions = {
   maxErrorLines: 10,
   ignore: []
 }
-const currentBranchRe = /^\*\s/;
 
 type AsyncFunc<T> = (() => Promise<T>);
 
@@ -99,6 +101,7 @@ export async function gitBroadcast(
     await fetchAll();
 
     clearCaches();
+    haveFetchedAll = false;
 
     const result = await tryMergeAll(
       opts,
@@ -404,10 +407,6 @@ function gitAbortMerge(): Promise<ProcessResult> {
   return git("merge", "--abort");
 }
 
-function git(...args: string[]): Promise<ProcessResult> {
-  return exec("git", args);
-}
-
 async function runIn<T>(
   dir: string | undefined,
   action: AsyncFunc<T>) {
@@ -451,42 +450,3 @@ async function findDefaultBranch(): Promise<string | undefined> {
   return headRef.split("/").slice(1).join("/");
 }
 
-const rawBranchResultCache: string[] = [];
-
-export function clearCaches() {
-  haveFetchedAll = false;
-  rawBranchResultCache.splice(0, rawBranchResultCache.length);
-}
-
-async function listBranchesRaw(spec?: string): Promise<string[]> {
-  if (rawBranchResultCache.length) {
-    return rawBranchResultCache;
-  }
-  const args = [ "branch", "-a", "--list" ];
-  if (spec && spec !== "*") {
-    args.push(spec);
-  }
-  const result = (
-    await git.apply(null, args)
-  ).stdout;
-
-  rawBranchResultCache.splice(0, 0, ...result);
-  return result;
-}
-
-async function matchBranches(
-  spec: string,
-  opts: BroadcastOptions
-): Promise<string[]> {
-  const
-    ignore = new Set<string>(opts.ignore || []),
-    result = await listBranchesRaw(spec);
-  return result.map(
-    // remove the "current branch" marker
-    line => line.replace(currentBranchRe, "")
-  ).map(line => line.trim())
-    .filter(line => line.indexOf(" -> ") === -1)
-    .filter(line => {
-      return !ignore.has((line || "").trim())
-    });
-}

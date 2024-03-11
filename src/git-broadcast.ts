@@ -64,10 +64,6 @@ export async function gitBroadcast(
     ...defaultOptions,
     ...providedOptions
   } as BroadcastOptions;
-  debug({
-    label: "calculated options",
-    opts
-  });
   const logger = opts.logger ?? new NullLogger();
   return await runIn(opts.in, async () => {
     if (!opts.logPrefixer) {

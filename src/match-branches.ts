@@ -15,6 +15,14 @@ export async function matchBranches(
   ).map(line => line.trim())
     .filter(line => line.indexOf(" -> ") === -1)
     .filter(line => {
-      return !ignore.has((line || "").trim())
+      return !isIgnored(line, ignore)
     });
+}
+
+function isIgnored(
+  line: string,
+  ignore: Set<string>
+) {
+  const parts = line.split("/");
+  return ignore.has(line) || ignore.has(parts[parts.length - 1]);
 }

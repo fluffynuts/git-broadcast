@@ -15,5 +15,6 @@ export interface BroadcastOptions {
     gitUser?: string;
     gitToken?: string;
     maxErrorLines?: number;
+    ignore?: string[]
 }
 

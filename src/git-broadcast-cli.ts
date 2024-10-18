@@ -41,7 +41,7 @@ const debug = mkdebug(__filename);
         }
         process.exit(success ? 0 : 2);
     } catch (e) {
-        if (typeof e !== "string") {
+        if (e instanceof Error) {
             if (e.stack) {
                 e = e.stack;
             } else if (e.message) {

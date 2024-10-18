@@ -1,4 +1,6 @@
 import { ConsoleLogger, LogLevel } from "../src/console-logger";
+const { spyOn } = jest;
+const { stringMatching } = expect;
 
 describe(`console-logger`, () => {
     it(`should default to log level info`, async () => {
@@ -13,14 +15,14 @@ describe(`console-logger`, () => {
 
     it(`should log info via console.log`, async () => {
         // Arrange
-        spyOn(console, "log");
+        spyOn(console, "log").mockImplementation(() => { /**/ });
         const sut = create();
         // Act
         sut.info("foo bar");
         // Assert
         expect(console.log)
             .toHaveBeenCalledWith(
-                jasmine.stringMatching(/foo bar/)
+                stringMatching(/foo bar/)
             );
     });
 

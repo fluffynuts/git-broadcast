@@ -5,7 +5,7 @@ if (typeof jest !== "undefined") {
     console.error("git-broadcast-cli has been imported into a test!");
     process.exit(1);
 }
-import chalk from "chalk";
+import * as chalk from "ansi-colors";
 import { gitBroadcast } from "./git-broadcast";
 import { ConsoleLogger, LogLevel } from "./console-logger";
 import { mkdebug } from "./mkdebug";
@@ -50,7 +50,7 @@ const debug = mkdebug(__filename);
                 e = e.toString();
             }
         }
-        console.error(chalk.red(e));
+        console.error(chalk.red(e as string));
         process.exit(1);
     }
 })();

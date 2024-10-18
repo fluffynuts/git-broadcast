@@ -83,7 +83,8 @@ export async function parseArgs(): Promise<CliOptions> {
     }).option("ignore", {
       type: "array",
       default: [],
-      description: "a list of branch names to ignore"
+      description: "a list of branch names to ignore",
+      coerce: (values: (string|number)[]) => values.map(o => `${o}`)
     })
     .version(await readVersionInfo())
     .help()

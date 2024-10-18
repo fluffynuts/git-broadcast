@@ -1,4 +1,4 @@
-import chalk from "chalk";
+import * as chalk from "ansi-colors";
 
 export type LogFunction = (...args: any[]) => void;
 type PassThrough<T> = (o: T) => T;
@@ -40,6 +40,19 @@ function timestamp() {
         M = zpad(now.getMinutes()),
         S = zpad(now.getSeconds());
     return `${ y }-${ m }-${ d } ${ H }:${ M }:${ S }`;
+}
+
+function yellow(s: string): string {
+  return chalk.yellowBright(s);
+}
+function red(s: string): string {
+  return chalk.redBright(s);
+}
+function magenta(s: string): string {
+  return chalk.magentaBright(s);
+}
+function gray(s: string): string {
+  return chalk.gray(s);
 }
 
 export class ConsoleLogger implements Logger {
@@ -88,16 +101,16 @@ export class ConsoleLogger implements Logger {
 
         this._debug = level > LogLevel.debug
             ? noop
-            : this._makeLogger(console.debug.bind(console), chalk.gray.bind(chalk), "DEBUG", suppressLogPrefixes);
+            : this._makeLogger(console.debug.bind(console), gray, "DEBUG", suppressLogPrefixes);
         this._info = level > LogLevel.info
             ? noop
-            : this._makeLogger(console.log.bind(console), chalk.yellow.bind(chalk), "INFO", suppressLogPrefixes);
+            : this._makeLogger(console.log.bind(console), yellow, "INFO", suppressLogPrefixes);
         this._warn = level > LogLevel.warn
             ? noop
-            : this._makeLogger(console.log.bind(console), chalk.magenta.bind(chalk), "WARN", suppressLogPrefixes);
+            : this._makeLogger(console.log.bind(console), magenta, "WARN", suppressLogPrefixes);
         // if we bind to console.error, then the consumer has to redirect stderr to catch error
         // messages in a piped application (eg slack-webhook-say)
-        this._error = this._makeLogger(console.log.bind(console), chalk.red.bind(chalk), "ERROR", suppressLogPrefixes)
+        this._error = this._makeLogger(console.log.bind(console), red, "ERROR", suppressLogPrefixes)
     }
 
     private _makeLogger(

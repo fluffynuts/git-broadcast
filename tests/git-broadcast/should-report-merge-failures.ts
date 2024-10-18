@@ -2,7 +2,7 @@
 
 import "expect-even-more-jest";
 import { Sandbox } from "filesystem-sandbox";
-import * as faker from "faker";
+import { faker } from "@faker-js/faker";
 import { gitBroadcast } from "../../src/git-broadcast";
 // @ts-ignore
 import { Repository } from "../repository";
@@ -25,9 +25,9 @@ describe(`git-broadcast`, () => {
             const
                 sandbox = await Sandbox.create(),
                 featureBranch = "feature/stuff",
-                readmeContents = `initial: ${ faker.random.words() }`,
-                updatedContents = `updated: ${ faker.random.words() }`,
-                conflictingContents = `conflict: ${faker.random.words() }`,
+                readmeContents = `initial: ${ faker.word.sample() }`,
+                updatedContents = `updated: ${ faker.word.sample() }`,
+                conflictingContents = `conflict: ${faker.word.sample() }`,
                 initialMessage = ":tada: initial commit",
                 updatedMessage = ":memo: prior docs are all wrong!",
                 conflictingMessage = ":fire: conflict!",

@@ -1,4 +1,4 @@
-import * as faker from "faker";
+import { faker } from "@faker-js/faker";
 import { BroadcastResult } from "../../src/git-broadcast";
 import { createSummary, parseSummary } from "../../src/summary";
 
@@ -7,9 +7,9 @@ describe(`create-summary`, () => {
         // Arrange
         const
             mergedBranch = {
-                authorName: faker.name.findName(),
+                authorName: faker.person.fullName(),
                 authorEmail: faker.internet.email(),
-                target: faker.random.alphaNumeric(),
+                target: faker.string.alphanumeric(),
                 pushed: true
             },
             data = {

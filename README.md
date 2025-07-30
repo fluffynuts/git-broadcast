@@ -2,7 +2,29 @@
 
 Utility to merge outwards from one branch to all others, where cleanly possible
 
-⚗️ This is a young project, but it's working for me. YMMV.
+## Usage
+Run via `npx`, eg `npx -y git-broadcast`
+
+### Commandline options:
+Run `npx -y git-broadcast --help` to get help at the cli. Other options include:
+
+- `-f|--from {branchName}` specify the source branch (default: 'master')
+- `-t|--to {branchName}` specify the target branch(es) (default: '*' - selects all branches except the source)
+- `--ignore-missing-branches` - when a branch explicitly specified at the cli is not found, do not error
+- `-i|--in` - run in the specified folder instead of the current working directory
+- `-v|--verbose` - output more logging info (default: off)
+- `-p|--push` - attempt to push back to the remote after a successful merge (default: on)
+- `--git-user` - specify the username for git
+- `--git-token` - provide an auth token for git
+- `--print-summary` - print a summary at the end, useful for reporting elsewhere (default: off)
+- `--pretty` - enable pretty logging (emoji, formatting with backticks, etc) for forwarding to, eg, slack
+- `--show-version` - show the version of git-broadcast during normal operations
+- `--suppress-log-prefixes` - suppress log prefixes like timestamp and log level for cleaner output
+- `--prefix-logs-with` - prefix all logging with this string, eg your repo name to disambiguate outputs
+- `--ignore` - one or more space-separated branch names to ignore (don't update them), can be specified more than once 
+- `--version` - print out the current version of the tool
+- `--help` - get this help in a console
+## Configuring at GitHub Actions so you have to merge less into feature branches
 
 See the example workflow file to have your master branch merged
 out to satellite branches whenever it's updated or satellites

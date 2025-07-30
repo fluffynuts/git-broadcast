@@ -24,6 +24,12 @@ Run `npx -y git-broadcast --help` to get help at the cli. Other options include:
 - `--ignore` - one or more space-separated branch names to ignore (don't update them), can be specified more than once 
 - `--version` - print out the current version of the tool
 - `--help` - get this help in a console
+
+`git-broadcast` will also honor the GIT_BROADCAST_IGNORE_BRANCHES environment variable
+which can contain a comma-separated list of branches to always ignore, _in addition to_
+any branches specified with `-i` on the cli.
+
+
 ## Configuring at GitHub Actions so you have to merge less into feature branches
 
 See the example workflow file to have your master branch merged

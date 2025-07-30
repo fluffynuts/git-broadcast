@@ -18,3 +18,7 @@ export interface BroadcastOptions {
     ignore?: string[]
 }
 
+export interface Config {
+  detached?: boolean;
+}
+

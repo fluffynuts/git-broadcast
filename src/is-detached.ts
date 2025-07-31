@@ -56,9 +56,24 @@ async function isDetachedByConfigFile(
   }
   const config = tryParse<Config>(raw, logger, opts);
   if (config === undefined) {
-    return false;
+    return true;
   }
-  return config?.detached ?? false;
+  // if the config object can be found, but
+  // "detached" isn't set, rather issue a warning
+  // and don't do the merge - the author can always
+  // fixup the config file and re-commit for a later
+  // broadcast
+  if (config?.detached === undefined) {
+    logger.warn(heredoc`
+        detached value not set in ${configFilePath}
+        - assuming detached for safety reasons
+        - you may update this file with "detached": false
+          or remove it completely if not required any more
+          if you wish to re-enable git broadcasts to this
+          branch
+        `);
+  }
+  return config?.detached ?? true;
 }
 
 function tryParse<T>(

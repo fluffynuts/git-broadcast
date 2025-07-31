@@ -3,6 +3,7 @@ import { BroadcastResult } from "../../src/git-broadcast";
 import { createSummary, parseSummary } from "../../src/summary";
 
 describe(`create-summary`, () => {
+  // FIXME: the summary prints ok - this test needs attention and I need to get a release out
     it.skip(`should print out the one merged, pushed branch with author info`, async () => {
         // Arrange
         const
@@ -15,13 +16,20 @@ describe(`create-summary`, () => {
             data = {
                 pushedAll: true,
                 from: "master",
-                to: [],
+                to: ["foo"],
                 ignoreMissingBranches: true,
                 unmerged: [],
                 merged: [ mergedBranch ]
-            } as BroadcastResult;
+            } as BroadcastResult,
+          expected = [
+            "from: master",
+            "to: foo",
+            "ignoreMissingBranches: true",
+            "merged:"
+            ];
         // Act
         const result = createSummary(data);
+        console.log(result);
         // Assert
         const parsed = parseSummary(result);
         expect(parsed)

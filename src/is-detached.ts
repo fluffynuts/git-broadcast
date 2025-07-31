@@ -63,9 +63,9 @@ async function isDetachedByConfigFile(
   // and don't do the merge - the author can always
   // fixup the config file and re-commit for a later
   // broadcast
-  if (config?.detached === undefined) {
+  if (config?.detached === undefined && config?.ignore === undefined) {
     logger.warn(heredoc`
-        detached value not set in ${configFilePath}
+        "detached" and "ignore" not set in ${configFilePath}
         - assuming detached for safety reasons
         - you may update this file with "detached": false
           or remove it completely if not required any more
@@ -73,7 +73,17 @@ async function isDetachedByConfigFile(
           branch
         `);
   }
-  return config?.detached ?? true;
+  if (
+    config?.detached !== undefined &&
+    config?.ignore !== undefined &&
+    config?.detached !== config?.ignore
+  ) {
+    logger.warn(heredoc`
+    both "detached" and "ignore" are set in ${configFilePath}
+    - "detached" will take preference over "ignore"
+    `);
+  }
+  return config?.detached ?? config?.ignore ?? true;
 }
 
 function tryParse<T>(

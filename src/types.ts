@@ -20,5 +20,6 @@ export interface BroadcastOptions {
 
 export interface Config {
   detached?: boolean;
+  ignore?: boolean;
 }
 
